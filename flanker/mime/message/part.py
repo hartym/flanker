@@ -4,7 +4,7 @@ import logging
 import mimetypes
 import imghdr
 from contextlib import closing
-from cStringIO import StringIO
+from io import StringIO
 
 from os import path
 from email.mime import audio
@@ -598,7 +598,7 @@ def decode_charset(ctype, body):
     # have a bug there
     if ctype.sub =='html' and charset == 'utf-8':
         # Outlook bug
-        body = body.replace(u'\xa0', u'&nbsp;')
+        body = body.replace('\xa0', '&nbsp;')
 
     return body
 

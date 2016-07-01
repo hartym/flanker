@@ -44,7 +44,7 @@ from flanker.utils import is_pure_ascii
 from flanker.utils import metrics_wrapper
 from flanker.mime.message.headers.encoding import encode_string
 from flanker.mime.message.headers.encodedword import mime_to_unicode
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 
 @metrics_wrapper()
@@ -279,7 +279,7 @@ def validate_list(addr_list, as_tuple=False, metrics=False):
             ulist.append(unpar)
 
         # update all the metrics
-        for k, v in metrics.iteritems():
+        for k, v in metrics.items():
             metrics[k] += v
 
     if as_tuple:
@@ -359,7 +359,7 @@ class EmailAddress(Address):
         elif display_name:
             self.display_name = display_name
         else:
-            self.display_name = u''
+            self.display_name = ''
 
         parts = spec.rsplit('@', 1)
         self.mailbox = parts[0]
@@ -402,15 +402,15 @@ class EmailAddress(Address):
             encoded_display_name = smart_quote(encode_string(
                 None, self.display_name, maxlinelen=MAX_ADDRESS_LENGTH))
             return '{0} <{1}>'.format(encoded_display_name, self.address)
-        return u'{0}'.format(self.address)
+        return '{0}'.format(self.address)
 
     def to_unicode(self):
         """
         Converts to unicode.
         """
         if self.display_name:
-            return u'{0} <{1}>'.format(self.display_name, self.address)
-        return u'{0}'.format(self.address)
+            return '{0} <{1}>'.format(self.display_name, self.address)
+        return '{0}'.format(self.address)
 
     def __cmp__(self, other):
         return True
@@ -420,7 +420,7 @@ class EmailAddress(Address):
         Allows comparison of two addresses.
         """
         if other:
-            if isinstance(other, basestring):
+            if isinstance(other, str):
                 other = parse(other)
                 if not other:
                     return False
@@ -509,7 +509,7 @@ class UrlAddress(Address):
     def __eq__(self, other):
         "Allows comparison of two URLs"
         if other:
-            if not isinstance(other, basestring):
+            if not isinstance(other, str):
                 other = other.address
             return self.address == other
 
@@ -583,7 +583,7 @@ class AddressList(object):
         """
         return delimiter.join(addr.full_spec() for addr in self.container)
 
-    def to_unicode(self, delimiter=u", "):
+    def to_unicode(self, delimiter=", "):
         return delimiter.join(addr.to_unicode() for addr in self.container)
 
     def to_ascii_list(self):
@@ -623,7 +623,7 @@ def _normalize_address_list(address_list):
     for addr in address_list:
         if isinstance(addr, Address):
             parts.append(addr.to_unicode())
-        if isinstance(addr, basestring):
+        if isinstance(addr, str):
             parts.append(addr)
 
     return parts

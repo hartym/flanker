@@ -50,7 +50,7 @@ def _guess_and_convert_with(value, detector=cchardet):
 
 
 def _make_unicode(value, charset=None):
-    if isinstance(value, unicode):
+    if isinstance(value, str):
         return value
 
     try:
@@ -71,7 +71,7 @@ def _make_unicode(value, charset=None):
 
 def to_unicode(value, charset=None):
     value = _make_unicode(value, charset)
-    return unicode(value.encode("utf-8", "strict"), "utf-8", "strict")
+    return str(value.encode("utf-8", "strict"), "utf-8", "strict")
 
 
 def to_utf8(value, charset=None):
@@ -100,7 +100,7 @@ def is_pure_ascii(value):
 
     if value is None:
         return False
-    if not isinstance(value, basestring):
+    if not isinstance(value, str):
         return False
 
     try:
@@ -147,5 +147,5 @@ def metrics_wrapper():
 
 
 # allows, \t\n\v\f\r (0x09-0x0d)
-CONTROL_CHARS = ''.join(map(unichr, range(0, 9) + range(14, 32) + range(127, 160)))
+CONTROL_CHARS = ''.join(map(chr, list(range(0, 9)) + list(range(14, 32)) + list(range(127, 160))))
 CONTROL_CHAR_RE = re.compile('[%s]' % re.escape(CONTROL_CHARS))
